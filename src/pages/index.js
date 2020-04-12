@@ -1,21 +1,60 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+import UseCases from "../components/UseCases/UseCases"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+const IndexPage = ({ data }) => {
+  return (
+    <Layout>
+      <SEO title="Home" />
+
+      <ul>
+        {data.dbs.edges &&
+          data.dbs.edges.map((db, dbIndex) => (
+            <li key={dbIndex}>
+              <Link to={db.node.frontmatter.slug}>
+                {db.node.frontmatter.title}
+              </Link>
+            </li>
+          ))}
+      </ul>
+
+      <UseCases queries={data.useCases.edges} />
+    </Layout>
+  )
+}
+
+export const query = graphql`
+  query {
+    useCases: allMarkdownRemark(
+      filter: { frontmatter: { template: { eq: "query" } } }
+      sort: { order: ASC, fields: [frontmatter___order___list] }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            tags
+            title
+          }
+        }
+      }
+    }
+    dbs: allMarkdownRemark(
+      filter: { frontmatter: { template: { eq: "db" } } }
+      sort: { order: ASC, fields: [frontmatter___order___list] }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            title
+            slug
+          }
+        }
+      }
+    }
+  }
+`
 
 export default IndexPage
