@@ -1,30 +1,63 @@
 import React from "react"
+import { WithContext as ReactTags } from 'react-tag-input';
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 class UseCases extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      tags: [],
+      allPossibleTags: [{
+        id: 'select',
+        text: 'select'
+      }, {
+        id: 'order',
+        text: 'order'
+      }, {
+        id: 'limit',
+        text: 'limit'
+      }],
       allQueries: props.queries,
       visibleQueries: props.queries,
     }
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.filterList = this.filterList.bind(this);
   }
 
-  filterList(event) {
-    let searchValue = event.target.value
+  handleDelete(i) {
+    const { tags } = this.state;
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i),
+    }, () => {
+      this.filterList()
+    });
+  }
 
-    if (searchValue) {
-      searchValue = searchValue.toLowerCase().trim()
+  handleAddition(tag) {
+    this.setState(state => ({ tags: [...state.tags, tag] }), () => {
+      this.filterList()
+    });
+  }
+
+  filterList() {
+    const { tags, allPossibleTags } = this.state;
+
+    if (!tags.length) {
+      this.setState({ visibleQueries: this.state.allQueries });
+      return;
     }
 
-    if (!searchValue) {
-      this.setState({ visibleQueries: this.state.allQueries })
-    }
-
-    const allPossibleTags = ["select", "order", "limit"]
-
-    const matchedTags = allPossibleTags.filter(tag => {
-      return tag.startsWith(searchValue)
+    let matchedTags = allPossibleTags.filter(possibleTag => {
+      return tags.some(tag => tag.id === possibleTag.id);
     })
+    matchedTags = matchedTags.map(tag => tag.id);
 
     const updatedList = this.state.allQueries.filter(query => {
       return (
@@ -37,6 +70,8 @@ class UseCases extends React.Component {
   }
 
   render() {
+    const { tags, allPossibleTags } = this.state;
+
     const queriesRes = this.state.visibleQueries.map((query, queryIndex) => (
       <div
         className="useCaseQuery"
@@ -53,7 +88,16 @@ class UseCases extends React.Component {
     return (
       <div>
         <h3>Use cases</h3>
-        <input onChange={this.filterList.bind(this)}></input>
+        <ReactTags tags={tags}
+          suggestions={allPossibleTags}
+          handleDelete={this.handleDelete}
+          handleAddition={this.handleAddition}
+          allowDragDrop={false}
+          delimiters={delimiters}
+          inline
+          autocomplete
+        />
+
         {queriesRes}
       </div>
     )
