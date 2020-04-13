@@ -1,5 +1,7 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
+import { Button } from 'antd';
+import { DatabaseOutlined } from '@ant-design/icons';
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -10,16 +12,21 @@ const IndexPage = ({ data }) => {
     <Layout>
       <SEO title="Home" />
 
-      <ul>
+      <div style={{
+        marginBottom: '20px'
+      }}>
         {data.dbs.edges &&
           data.dbs.edges.map((db, dbIndex) => (
-            <li key={dbIndex}>
-              <Link to={db.node.frontmatter.slug}>
+            <Link to={db.node.frontmatter.slug}
+              style={{
+                marginRight: '10px'
+              }}>
+              <Button type="dashed" icon={<DatabaseOutlined />}>
                 {db.node.frontmatter.title}
-              </Link>
-            </li>
+              </Button>
+            </Link>
           ))}
-      </ul>
+      </div>
 
       <UseCases queries={data.useCases.edges} />
     </Layout>

@@ -1,13 +1,9 @@
 import React from "react"
-import { WithContext as ReactTags } from 'react-tag-input';
-import Prism from "prismjs"
+import { Tag, Select } from 'antd';
+import { CaretRightFilled } from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
-const KeyCodes = {
-  comma: 188,
-  enter: 13,
-};
-
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
+const { Option } = Select;
 
 const code = `
 const foo = 'foo';
@@ -21,52 +17,30 @@ class UseCases extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tags: [],
-      allPossibleTags: [{
-        id: 'select',
-        text: 'select'
-      }, {
-        id: 'order',
-        text: 'order'
-      }, {
-        id: 'limit',
-        text: 'limit'
-      }],
+      selectedTags: [],
+      allPossibleTags: ['select', 'order', 'limit'],
       allQueries: props.queries,
       visibleQueries: props.queries,
     }
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleAddition = this.handleAddition.bind(this);
     this.filterList = this.filterList.bind(this);
   }
 
-  handleDelete(i) {
-    const { tags } = this.state;
-    this.setState({
-      tags: tags.filter((tag, index) => index !== i),
-    }, () => {
-      this.filterList()
-    });
-  }
+  filterList(value) {
+    value = value || '';
+    console.log('value', value);
 
-  handleAddition(tag) {
-    this.setState(state => ({ tags: [...state.tags, tag] }), () => {
-      this.filterList()
-    });
-  }
-
-  filterList() {
-    const { tags, allPossibleTags } = this.state;
-
-    if (!tags.length) {
-      this.setState({ visibleQueries: this.state.allQueries });
+    if (!value.length) {
+      this.setState({ visibleQueries: this.state.allQueries, selectedTags: [] });
       return;
     }
 
+    const { allPossibleTags } = this.state;
+
     let matchedTags = allPossibleTags.filter(possibleTag => {
-      return tags.some(tag => tag.id === possibleTag.id);
+      return value.includes(possibleTag);
     })
-    matchedTags = matchedTags.map(tag => tag.id);
+
+    console.log('matchedTags', matchedTags)
 
     const updatedList = this.state.allQueries.filter(query => {
       return (
@@ -75,22 +49,34 @@ class UseCases extends React.Component {
       )
     })
 
-    this.setState({ visibleQueries: updatedList });
+    this.setState({ visibleQueries: updatedList, selectedTags: matchedTags });
   }
 
   render() {
-    const { tags, allPossibleTags } = this.state;
+    const { allPossibleTags, selectedTags } = this.state;
 
     const queriesRes = this.state.visibleQueries.map((query, queryIndex) => (
       <div
         className="useCaseQuery"
         data-tags={query.node.frontmatter.tags.join()}
         key={queryIndex}
+        style={{
+          marginBottom: "40px"
+        }}
       >
-        <div>{query.node.frontmatter.title}</div>
-        <div>
+        <div style={{
+          fontSize: '18px',
+          color: '#0a0a0a',
+          marginBottom: '4px'
+        }}>
+          <CaretRightFilled style={{ color: '#08c' }} />
+          {query.node.frontmatter.title}
+        </div>
+        <div style={{
+          marginBottom: "10px"
+        }}>
           {query.node.frontmatter.tags.map((tag, tagIndex) => (
-            <span key={tagIndex}>{tag}</span>
+            <Tag key={tagIndex}>{tag}</Tag>
           ))}
         </div>
         <pre className="line-numbers">
@@ -101,17 +87,21 @@ class UseCases extends React.Component {
       </div>
     ))
 
+    const filteredOptions = allPossibleTags.filter(o => !selectedTags.includes(o));
+
     return (
       <div>
-        <ReactTags tags={tags}
-          suggestions={allPossibleTags}
-          handleDelete={this.handleDelete}
-          handleAddition={this.handleAddition}
-          allowDragDrop={false}
-          delimiters={delimiters}
-          inline
-          autocomplete
-        />
+        <Select
+          size="large"
+          mode="multiple"
+          style={{ width: '100%' }}
+          placeholder="Search"
+          onChange={this.filterList}
+        >
+          {filteredOptions.map(tag => (
+            <Option key={tag}>{tag}</Option>
+          ))}
+        </Select>
 
         <div style={{
           marginTop: "30px"
