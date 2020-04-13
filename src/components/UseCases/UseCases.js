@@ -1,5 +1,6 @@
 import React from "react"
 import { WithContext as ReactTags } from 'react-tag-input';
+import Prism from "prismjs"
 
 const KeyCodes = {
   comma: 188,
@@ -7,6 +8,14 @@ const KeyCodes = {
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
+const code = `
+const foo = 'foo';
+const bar = 'bar';
+function abc(gg) {
+  return "hello yo";
+}
+`.trim()
 
 class UseCases extends React.Component {
   constructor(props) {
@@ -66,7 +75,7 @@ class UseCases extends React.Component {
       )
     })
 
-    this.setState({ visibleQueries: updatedList })
+    this.setState({ visibleQueries: updatedList });
   }
 
   render() {
@@ -79,15 +88,21 @@ class UseCases extends React.Component {
         key={queryIndex}
       >
         <div>{query.node.frontmatter.title}</div>
-        {query.node.frontmatter.tags.map((tag, tagIndex) => (
-          <span key={tagIndex}>{tag}</span>
-        ))}
+        <div>
+          {query.node.frontmatter.tags.map((tag, tagIndex) => (
+            <span key={tagIndex}>{tag}</span>
+          ))}
+        </div>
+        <pre className="line-numbers">
+          <code className="language-js">
+            {code}
+          </code>
+        </pre>
       </div>
     ))
 
     return (
       <div>
-        <h3>Use cases</h3>
         <ReactTags tags={tags}
           suggestions={allPossibleTags}
           handleDelete={this.handleDelete}
@@ -98,7 +113,11 @@ class UseCases extends React.Component {
           autocomplete
         />
 
-        {queriesRes}
+        <div style={{
+          marginTop: "30px"
+        }}>
+          {queriesRes}
+        </div>
       </div>
     )
   }
