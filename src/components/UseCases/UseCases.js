@@ -1,9 +1,10 @@
 import React from "react"
-import { Link } from "gatsby"
-import { Tag, Select, Button } from 'antd';
+import { Tag, Select } from 'antd';
 import { CaretRightFilled, DatabaseOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import Prism from "prismjs"
+
+import QueryViewer from "../Query/QueryViewer";
 
 const { Option } = Select;
 
@@ -77,19 +78,11 @@ class UseCases extends React.Component {
             <Tag key={tagIndex}>{tag}</Tag>
           ))}
         </div>
-        <pre className={`language-${db.frontmatter.prismLanguage}`}>
-          <code className={`language-${db.frontmatter.prismLanguage}`}>
-            {query.node.frontmatter[db.frontmatter.slug].trim()}
-          </code>
-        </pre>
-        <Link to={query.node.frontmatter.slug}
-          style={{
-            marginRight: '10px'
-          }}>
-          <Button type="dashed" icon={<DatabaseOutlined />}>
-            View all variations
-          </Button>
-        </Link>
+        <QueryViewer
+          language={db.frontmatter.prismLanguage}
+          query={query.node.frontmatter[db.frontmatter.slug].trim()}
+          querySlug={query.node.frontmatter.slug}
+        />
       </div>
     ))
 

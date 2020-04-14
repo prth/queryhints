@@ -1,11 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
 import { Tag } from 'antd';
-import { CaretRightFilled } from '@ant-design/icons';
+import { CaretRightFilled, SnippetsOutlined } from '@ant-design/icons';
 import Prism from "prismjs"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import QueryViewer from "../components/Query/QueryViewer"
 
 class QueryTemplate extends React.Component {
   componentDidMount() {
@@ -48,11 +49,14 @@ class QueryTemplate extends React.Component {
             ))}
           </div>
           {data.query.frontmatter.dbs.map((db, dbIndex) => (
-            <pre className={`language-${dbLanguagesMap[db]}`} key={dbIndex}>
-              <code className={`language-${dbLanguagesMap[db]}`}>
-                {data.query.frontmatter[db].trim()}
-              </code>
-            </pre>
+            <div style={{
+              marginBottom: "40px"
+            }}>
+              <QueryViewer
+                language={dbLanguagesMap[db]}
+                query={data.query.frontmatter[db].trim()}
+              />
+            </div>
           ))}
         </div>
 
