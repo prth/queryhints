@@ -1,26 +1,19 @@
 import React from "react"
 import { graphql } from "gatsby"
 import { Tag } from 'antd';
-import { CaretRightFilled, SnippetsOutlined } from '@ant-design/icons';
-import Prism from "prismjs"
+import { CaretRightFilled } from '@ant-design/icons';
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import QueryViewer from "../components/Query/QueryViewer"
 
 class QueryTemplate extends React.Component {
-  componentDidMount() {
-    // You can call the Prism.js API here
-    // Use setTimeout to push onto callback queue so it runs after the DOM is updated
-    setTimeout(() => Prism.highlightAll(), 0)
-  }
-
   render() {
     const { data } = this.props;
 
     const dbLanguagesMap = {};
     for (let db of data.dbs.edges) {
-      dbLanguagesMap[db.node.frontmatter.slug] = db.node.frontmatter.prismLanguage;
+      dbLanguagesMap[db.node.frontmatter.slug] = db.node.frontmatter.queryViewerLanguage;
     }
 
     return (
@@ -86,7 +79,7 @@ export const query = graphql`
         node {
           frontmatter {
             slug
-            prismLanguage
+            queryViewerLanguage
           }
         }
       }

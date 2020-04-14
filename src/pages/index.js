@@ -68,7 +68,7 @@ export const query = graphql`
     ) {
       frontmatter {
         slug
-        prismLanguage
+        queryViewerLanguage
       }
     }
   }

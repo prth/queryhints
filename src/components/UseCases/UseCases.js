@@ -2,7 +2,6 @@ import React from "react"
 import { Tag, Select } from 'antd';
 import { CaretRightFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import Prism from "prismjs"
 
 import QueryViewer from "../Query/QueryViewer";
 
@@ -18,12 +17,6 @@ class UseCases extends React.Component {
       visibleQueries: props.queries,
     }
     this.filterList = this.filterList.bind(this);
-  }
-
-  componentDidMount() {
-    // You can call the Prism.js API here
-    // Use setTimeout to push onto callback queue so it runs after the DOM is updated
-    setTimeout(() => Prism.highlightAll(), 0)
   }
 
   filterList(value) {
@@ -82,7 +75,7 @@ class UseCases extends React.Component {
           ))}
         </div>
         <QueryViewer
-          language={db.frontmatter.prismLanguage}
+          language={db.frontmatter.queryViewerLanguage}
           query={query.node.frontmatter[db.frontmatter.slug].trim()}
           querySlug={query.node.frontmatter.slug}
         />

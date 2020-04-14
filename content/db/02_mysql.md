@@ -7,5 +7,5 @@ title: mysql
 tags:
   - select
   - limit
-prismLanguage: sql
+queryViewerLanguage: sql
 ---
