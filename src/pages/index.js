@@ -28,7 +28,7 @@ const IndexPage = ({ data }) => {
           ))}
       </div>
 
-      <UseCases queries={data.useCases.edges} />
+      <UseCases queries={data.useCases.edges} db="mongodb" />
     </Layout>
   )
 }
@@ -36,7 +36,7 @@ const IndexPage = ({ data }) => {
 export const query = graphql`
   query {
     useCases: allMarkdownRemark(
-      filter: { frontmatter: { template: { eq: "query" } } }
+      filter: { frontmatter: { template: { eq: "query" }, dbs: { in: ["mongodb"] } } }
       sort: { order: ASC, fields: [frontmatter___order___list] }
     ) {
       edges {
@@ -44,6 +44,7 @@ export const query = graphql`
           frontmatter {
             tags
             title
+            mongodb
           }
         }
       }

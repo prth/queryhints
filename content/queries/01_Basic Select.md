@@ -9,4 +9,10 @@ tags:
 dbs:
   - mongodb
   - mysql
+mongodb: |
+  db.inventory.find({
+    status: "1"
+  })
+mysql: |
+  SELECT * FROM inventory WHERE status = '1'
 ---

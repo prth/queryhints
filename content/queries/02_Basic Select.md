@@ -10,4 +10,10 @@ tags:
 dbs:
   - mongodb
   - postgres
+mongodb: |
+  db.inventory.find({
+    status: "2"
+  })
+postgres: |
+  SELECT * FROM inventory WHERE status = '2'
 ---

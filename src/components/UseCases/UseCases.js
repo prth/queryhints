@@ -5,14 +5,6 @@ import 'antd/dist/antd.css';
 
 const { Option } = Select;
 
-const code = `
-const foo = 'foo';
-const bar = 'bar';
-function abc(gg) {
-  return "hello yo";
-}
-`.trim()
-
 class UseCases extends React.Component {
   constructor(props) {
     super(props)
@@ -27,7 +19,6 @@ class UseCases extends React.Component {
 
   filterList(value) {
     value = value || '';
-    console.log('value', value);
 
     if (!value.length) {
       this.setState({ visibleQueries: this.state.allQueries, selectedTags: [] });
@@ -39,8 +30,6 @@ class UseCases extends React.Component {
     let matchedTags = allPossibleTags.filter(possibleTag => {
       return value.includes(possibleTag);
     })
-
-    console.log('matchedTags', matchedTags)
 
     const updatedList = this.state.allQueries.filter(query => {
       return (
@@ -54,6 +43,7 @@ class UseCases extends React.Component {
 
   render() {
     const { allPossibleTags, selectedTags } = this.state;
+    const { db } = this.props;
 
     const queriesRes = this.state.visibleQueries.map((query, queryIndex) => (
       <div
@@ -81,7 +71,7 @@ class UseCases extends React.Component {
         </div>
         <pre className="line-numbers">
           <code className="language-js">
-            {code}
+            {query.node.frontmatter[db]}
           </code>
         </pre>
       </div>

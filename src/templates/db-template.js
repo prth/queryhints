@@ -6,12 +6,14 @@ import SEO from "../components/seo"
 import UseCases from "../components/UseCases/UseCases"
 
 const DbTemplate = ({ data }) => {
+  console.log('data', data);
+
   return (
     <Layout>
       <SEO title="Home" />
 
       <h2>{data.db.frontmatter.title}</h2>
-      <UseCases queries={data.queries.edges} />
+      <UseCases queries={data.queries.edges} db={data.db.frontmatter.slug} />
     </Layout>
   )
 }
@@ -29,6 +31,9 @@ export const query = graphql`
           frontmatter {
             tags
             title
+            mongodb
+            mysql
+            postgres
           }
         }
       }
@@ -38,6 +43,7 @@ export const query = graphql`
     ) {
       frontmatter {
         title
+        slug
       }
     }
   }

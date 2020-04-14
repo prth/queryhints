@@ -9,4 +9,8 @@ tags:
 dbs:
   - postgres
   - mysql
+mysql: |
+  SELECT * FROM inventory WHERE status = '3'
+postgres: |
+  SELECT * FROM inventory WHERE status = '3'
 ---
