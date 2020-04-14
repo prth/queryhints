@@ -7,4 +7,5 @@ title: postgres
 tags:
   - select
   - limit
+prismLanguage: sql
 ---

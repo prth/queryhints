@@ -1,4 +1,5 @@
 ---
+slug: query-3
 order:
   list: 3
 template: query
@@ -10,7 +11,7 @@ dbs:
   - postgres
   - mysql
 mysql: |
-  SELECT * FROM inventory WHERE status = '3'
+  SELECT * FROM inventory WHERE status = '3';
 postgres: |
-  SELECT * FROM inventory WHERE status = '3'
+  SELECT * FROM inventory WHERE status = '3';
 ---

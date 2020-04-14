@@ -1,4 +1,5 @@
 ---
+slug: query-2
 order:
   list: 2
 template: query
@@ -15,5 +16,5 @@ mongodb: |
     status: "2"
   })
 postgres: |
-  SELECT * FROM inventory WHERE status = '2'
+  SELECT * FROM inventory WHERE status = '2';
 ---

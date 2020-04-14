@@ -28,7 +28,7 @@ const IndexPage = ({ data }) => {
           ))}
       </div>
 
-      <UseCases queries={data.useCases.edges} db="mongodb" />
+      <UseCases queries={data.useCases.edges} db={data.defaultDb} />
     </Layout>
   )
 }
@@ -42,6 +42,7 @@ export const query = graphql`
       edges {
         node {
           frontmatter {
+            slug
             tags
             title
             mongodb
@@ -60,6 +61,14 @@ export const query = graphql`
             slug
           }
         }
+      }
+    }
+    defaultDb: markdownRemark(
+      frontmatter: { template: { eq: "db" }, slug: { eq: "mongodb" } }
+    ) {
+      frontmatter {
+        slug
+        prismLanguage
       }
     }
   }

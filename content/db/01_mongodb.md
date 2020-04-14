@@ -7,4 +7,5 @@ title: mongodb
 tags:
   - select
   - order
+prismLanguage: js
 ---

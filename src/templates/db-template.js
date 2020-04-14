@@ -13,7 +13,7 @@ const DbTemplate = ({ data }) => {
       <SEO title="Home" />
 
       <h2>{data.db.frontmatter.title}</h2>
-      <UseCases queries={data.queries.edges} db={data.db.frontmatter.slug} />
+      <UseCases queries={data.queries.edges} db={data.db} />
     </Layout>
   )
 }
@@ -29,6 +29,7 @@ export const query = graphql`
       edges {
         node {
           frontmatter {
+            slug
             tags
             title
             mongodb
@@ -44,6 +45,7 @@ export const query = graphql`
       frontmatter {
         title
         slug
+        prismLanguage
       }
     }
   }

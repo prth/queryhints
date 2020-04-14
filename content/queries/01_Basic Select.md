@@ -1,4 +1,5 @@
 ---
+slug: query-1
 order:
   list: 1
 template: query
@@ -14,5 +15,5 @@ mongodb: |
     status: "1"
   })
 mysql: |
-  SELECT * FROM inventory WHERE status = '1'
+  SELECT * FROM inventory WHERE status = '1';
 ---

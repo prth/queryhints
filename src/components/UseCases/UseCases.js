@@ -1,7 +1,9 @@
 import React from "react"
-import { Tag, Select } from 'antd';
-import { CaretRightFilled } from '@ant-design/icons';
+import { Link } from "gatsby"
+import { Tag, Select, Button } from 'antd';
+import { CaretRightFilled, DatabaseOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import Prism from "prismjs"
 
 const { Option } = Select;
 
@@ -15,6 +17,12 @@ class UseCases extends React.Component {
       visibleQueries: props.queries,
     }
     this.filterList = this.filterList.bind(this);
+  }
+
+  componentDidMount() {
+    // You can call the Prism.js API here
+    // Use setTimeout to push onto callback queue so it runs after the DOM is updated
+    setTimeout(() => Prism.highlightAll(), 0)
   }
 
   filterList(value) {
@@ -69,11 +77,19 @@ class UseCases extends React.Component {
             <Tag key={tagIndex}>{tag}</Tag>
           ))}
         </div>
-        <pre className="line-numbers">
-          <code className="language-js">
-            {query.node.frontmatter[db]}
+        <pre className={`language-${db.frontmatter.prismLanguage}`}>
+          <code className={`language-${db.frontmatter.prismLanguage}`}>
+            {query.node.frontmatter[db.frontmatter.slug].trim()}
           </code>
         </pre>
+        <Link to={query.node.frontmatter.slug}
+          style={{
+            marginRight: '10px'
+          }}>
+          <Button type="dashed" icon={<DatabaseOutlined />}>
+            View all variations
+          </Button>
+        </Link>
       </div>
     ))
 

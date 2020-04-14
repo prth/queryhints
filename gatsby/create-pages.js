@@ -9,7 +9,7 @@ const createPages = async ({ graphql, actions }) => {
   // Posts and pages from markdown
   const result = await graphql(`
     query {
-      allMarkdownRemark(filter: { frontmatter: { template: { eq: "db" } } }) {
+      allMarkdownRemark(filter: { frontmatter: { template: { in: ["db", "query"] } } }) {
         edges {
           node {
             frontmatter {
@@ -29,6 +29,12 @@ const createPages = async ({ graphql, actions }) => {
       createPage({
         path: edge.node.frontmatter.slug,
         component: path.resolve("./src/templates/db-template.js"),
+        context: { slug: edge.node.frontmatter.slug },
+      })
+    } else if (_.get(edge, "node.frontmatter.template") === "query") {
+      createPage({
+        path: edge.node.frontmatter.slug,
+        component: path.resolve("./src/templates/query-template.js"),
         context: { slug: edge.node.frontmatter.slug },
       })
     }
