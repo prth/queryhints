@@ -1,6 +1,6 @@
 import React from "react"
 import { Tag, Select } from 'antd';
-import { CaretRightFilled, DatabaseOutlined } from '@ant-design/icons';
+import { CaretRightFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import Prism from "prismjs"
 
@@ -75,7 +75,10 @@ class UseCases extends React.Component {
           marginBottom: "10px"
         }}>
           {query.node.frontmatter.tags.map((tag, tagIndex) => (
-            <Tag key={tagIndex}>{tag}</Tag>
+            <Tag
+              key={tagIndex}
+              {...(selectedTags.includes(tag) ? { color: '#626262' } : {})}
+            >{tag}</Tag>
           ))}
         </div>
         <QueryViewer
