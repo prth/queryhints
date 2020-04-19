@@ -8,34 +8,32 @@ const Header = ({ siteTitle }) => (
   <header
     style={{
       background: `white`,
-      marginBottom: `1.45rem`,
     }}
   >
     <div
       style={{
         margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
+        padding: `1.25rem 1.0875rem`,
         display: "flex",
         alignItems: "center",
       }}
     >
       <Icon
         style={{
-          height: 32,
+          height: 28,
           fill: "#7b1fa2",
         }}
       />
-      <h1 style={{ margin: 0, paddingLeft: "6px", fontSize: "28px" }}>
+      <h1 style={{ margin: 0, paddingLeft: "6px", fontSize: "24px" }}>
         <Link
           to="/"
           style={{
-            color: `#111`,
+            color: `#222`,
             textDecoration: `none`,
           }}
         >
           {siteTitle}
-        </Link>
+        </Link> <span style={{ color: '#aaa' }}>*wip*</span>
       </h1>
     </div>
   </header>

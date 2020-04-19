@@ -1,11 +1,10 @@
 import React from "react"
-import { Tag, Select } from 'antd';
-import { CaretRightFilled } from '@ant-design/icons';
-import 'antd/dist/antd.css';
+import { Tag, Select, Typography, Row, Col } from 'antd';
 
 import QueryViewer from "../Query/QueryViewer";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 class UseCases extends React.Component {
   constructor(props) {
@@ -44,48 +43,15 @@ class UseCases extends React.Component {
   }
 
   render() {
-    const { allPossibleTags, selectedTags } = this.state;
+    const { allPossibleTags, selectedTags, visibleQueries } = this.state;
     const { db } = this.props;
-
-    const queriesRes = this.state.visibleQueries.map((query, queryIndex) => (
-      <div
-        className="useCaseQuery"
-        data-tags={query.node.frontmatter.tags.join()}
-        key={queryIndex}
-        style={{
-          marginBottom: "40px"
-        }}
-      >
-        <div style={{
-          fontSize: '18px',
-          color: '#0a0a0a',
-          marginBottom: '4px'
-        }}>
-          <CaretRightFilled style={{ color: '#08c' }} />
-          {query.node.frontmatter.title}
-        </div>
-        <div style={{
-          marginBottom: "10px"
-        }}>
-          {query.node.frontmatter.tags.map((tag, tagIndex) => (
-            <Tag
-              key={tagIndex}
-              {...(selectedTags.includes(tag) ? { color: '#626262' } : {})}
-            >{tag}</Tag>
-          ))}
-        </div>
-        <QueryViewer
-          language={db.frontmatter.queryViewerLanguage}
-          query={query.node.frontmatter[db.frontmatter.slug].trim()}
-          querySlug={query.node.frontmatter.slug}
-        />
-      </div>
-    ))
 
     const filteredOptions = allPossibleTags.filter(o => !selectedTags.includes(o));
 
     return (
       <div>
+        <Title level={4}># Queries</Title>
+
         <Select
           size="large"
           mode="multiple"
@@ -98,11 +64,32 @@ class UseCases extends React.Component {
           ))}
         </Select>
 
-        <div style={{
-          marginTop: "30px"
-        }}>
-          {queriesRes}
-        </div>
+        <Row gutter={[16, 36]} style={{ marginTop: "20px" }}>
+
+          {visibleQueries.map((query) => (
+            <Col span={24}>
+              <div style={{ fontSize: "18px", color: "#111" }}>
+                ~ {query.node.frontmatter.title}
+              </div>
+              <div>
+                {query.node.frontmatter.tags.map((tag, tagIndex) => (
+                  <Tag
+                    key={tagIndex}
+                    {...(selectedTags.includes(tag) ? { color: '#626262' } : {})}
+                  >{tag}</Tag>
+                ))}
+              </div>
+              <div>
+                <QueryViewer language={db.frontmatter.queryViewerLanguage}
+                  clipboard={true}
+                  querySlug={query.node.frontmatter.slug}>
+                  {query.node.frontmatter[db.frontmatter.slug].trim()}
+                </QueryViewer>
+              </div>
+            </Col>
+          ))}
+
+        </Row>
       </div>
     )
   }

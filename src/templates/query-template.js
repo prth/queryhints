@@ -1,11 +1,13 @@
 import React from "react"
 import { graphql } from "gatsby"
-import { Tag } from 'antd';
-import { CaretRightFilled } from '@ant-design/icons';
+import { Row, Col, Typography } from 'antd';
+// import { CaretRightFilled } from '@ant-design/icons';
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import QueryViewer from "../components/Query/QueryViewer"
+
+const { Title } = Typography;
 
 class QueryTemplate extends React.Component {
   render() {
@@ -27,30 +29,37 @@ class QueryTemplate extends React.Component {
           }}
         >
           <div style={{
-            fontSize: '18px',
-            color: '#0a0a0a',
-            marginBottom: '4px'
+            marginTop: '20px'
           }}>
-            <CaretRightFilled style={{ color: '#08c' }} />
-            {data.query.frontmatter.title}
+            <Title level={4}>
+              {data.query.frontmatter.title}
+            </Title>
           </div>
-          <div style={{
+          {/* <div style={{
             marginBottom: "10px"
           }}>
             {data.query.frontmatter.tags.map((tag, tagIndex) => (
               <Tag key={tagIndex}>{tag}</Tag>
             ))}
-          </div>
-          {data.query.frontmatter.dbs.map((db, dbIndex) => (
-            <div style={{
-              marginBottom: "40px"
-            }}>
-              <QueryViewer
-                language={dbLanguagesMap[db]}
-                query={data.query.frontmatter[db].trim()}
-              />
-            </div>
-          ))}
+          </div> */}
+
+          <Row gutter={[16, 24]} style={{ marginTop: "5px" }}>
+            {data.query.frontmatter.dbs.map((db, dbIndex) => (
+              <Col span={24}>
+                <div style={{ fontSize: "18px", color: "#111" }}>
+                  #{db}
+                </div>
+                <div>
+                  <QueryViewer
+                    language={dbLanguagesMap[db]}
+                    clipboard={false}
+                  >
+                    {data.query.frontmatter[db].trim()}
+                  </QueryViewer>
+                </div>
+              </Col>
+            ))}
+          </Row>
         </div>
 
       </Layout>
