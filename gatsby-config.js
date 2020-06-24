@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `queryhints.com`,
-    description: `A cheatsheet of database queries`,
+    title: `Queryhints`,
+    description: `Cheatsheets for database queries`,
     author: `prth`,
   },
   plugins: [
@@ -11,6 +11,20 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `assets`,
+        path: `${__dirname}/content/assets`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "pages",
+        path: `${__dirname}/content`,
       },
     },
     `gatsby-transformer-sharp`,
@@ -24,7 +38,25 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `content/assets/icon.png`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: `src/utils/typography`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [`gatsby-remark-prismjs`],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: `UA-164005624-1`,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
